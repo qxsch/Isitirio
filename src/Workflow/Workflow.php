@@ -28,7 +28,7 @@ class Workflow {
 			foreach($transition->getValidationTriggers() as $trigger) {
 				$trigger->callTrigger($event);
 				// propagation stopped? 
-				if($event->stopPropagation()) break;
+				if($event->isPropagationStopped()) break;
 			}
 			// is the transition blocked? -> continue
 			if($event->isBlocked()) continue;
@@ -57,7 +57,7 @@ class Workflow {
 			foreach($transition->getValidationTriggers() as $trigger) {
 				$trigger->callTrigger($event);
 				// propagation stopped? 
-				if($event->stopPropagation()) break;
+				if($event->isPropagationStopped()) break;
 			}
 			// is the transition blocked? -> continue
 			if($event->isBlocked()) continue;
@@ -95,7 +95,7 @@ class Workflow {
 		foreach($transition->getBeforeTriggers() as $trigger) {
 			$trigger->callTrigger($event);
 			// propagation stopped? 
-			if($event->stopPropagation()) break;
+			if($event->isPropagationStopped()) break;
 		}
 		return !$this->isBlocked();
 	}
@@ -105,7 +105,7 @@ class Workflow {
 		foreach($transition->getAfterTriggers() as $trigger) {
 			$trigger->callTrigger($event);
 			// propagation stopped? 
-			if($event->stopPropagation()) break;
+			if($event->isPropagationStopped()) break;
 		}
 		return !$this->isBlocked();
 	}
