@@ -6,7 +6,6 @@ Requirements:
  * php 7.1+
  * symfony 
    * yaml ~4.0
-   * workflow ~4.0
    * event-dispatcher ~4.0
  * apache or nginx
  
