@@ -28,10 +28,26 @@ class Html {
 	}
 
 	public static function Text(AbstractCustomfield $cf, $value=null) {
-		return '<div>' . self::getValueAsEscapedString($cf, $value) . '</div>';
+		return '<div>' . nl2br(self::getValueAsEscapedString($cf, $value)) . '</div>';
 	}
+
+	public static function Textarea(AbstractCustomfield $cf, $value=null, array $attributes=array()) {
+		$html = '<textarea name="icf_' . $cf->getId() . '"';
+		foreach($attributes as $k => $v) {
+			$html .= ' ' . self::getValidName($k);
+			if($v!==null) {
+				$html .= '="' . htmlspecialchars($v) . '"';
+			}
+			$html .= ' ';
+		}
+		$html .= '>';
+		$html .= self::getValueAsEscapedString($cf, $value);
+		$html .= '</textarea>';
+		return $html;
+	}
+
 	public static function Input(AbstractCustomfield $cf, $value=null, array $attributes=array()) {
-		$html = '<input name="icf_' . $cf->getId() .'" value="' . self::getValueAsEscapedString($cf, $value) . '" ';
+		$html = '<input name="icf_' . $cf->getId() . '" value="' . self::getValueAsEscapedString($cf, $value) . '" ';
 		foreach($attributes as $k => $v) {
 			$html .= self::getValidName($k);
 			if($v!==null) {
