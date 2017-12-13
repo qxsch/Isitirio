@@ -101,6 +101,19 @@ class Yaml implements ArrayAccess, IteratorAggregate, Countable {
 		return $s;
 	}
 
+	public function toArray() : array {
+		$array = array();
+		foreach($this->yaml as $key => $val) {
+			if($val instanceof Yaml) {
+				$array[$key] = $val->toArray();
+			}
+			else {
+				$array[$key] = $val;
+			}
+		}
+		return $array;
+	}
+
 	public function count() {
 		return $this->yaml->count();
 	}
