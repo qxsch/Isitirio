@@ -2,6 +2,7 @@
 namespace Isitirio\Workflow;
 
 use LogicException,
+    Isitirio\Ticket\Ticket,
     Isitirio\Workflow\Lists\TransitionList,
     Isitirio\Workflow\Events\ValidatorEvent,
     Isitirio\Workflow\Events\BeforeEvent,
@@ -36,8 +37,8 @@ class Workflow {
 
 	public function getEnabledTransitions(Ticket $ticket) {
 		$result = array();
-		foreach($this->transitions->getTransitionsFrom($ticket->getState()) as $tansition) {
-			$event = new ValidatorEvent($this, $tansition, $ticket);
+		foreach($this->transitions->getTransitionsFrom($ticket->getState()) as $transition) {
+			$event = new ValidatorEvent($this, $transition, $ticket);
 			foreach($transition->getValidationTriggers() as $trigger) {
 				$trigger->callTrigger($event);
 				// propagation stopped? 
@@ -45,7 +46,7 @@ class Workflow {
 			}
 			// is the transition blocked? -> continue
 			if($event->isBlocked()) continue;
-			$result[]=$tansition;
+			$result[]=$transition;
 		}
 		return $result;
 	}
@@ -53,7 +54,7 @@ class Workflow {
 	public function getEnabledTransitionNames(Ticket $ticket) {
 		$names=array();
 		foreach($this->getEnabledTransitions($ticket) as $transition) {
-			$names[strtolower($tansition->getName())]=$tansition->getName();
+			$names[strtolower($transition->getName())]=$transition->getName();
 		}
 
 		return array_values($names);
@@ -62,19 +63,19 @@ class Workflow {
 	private function getFirstTransitionByName(Ticket $ticket, string $transitionName) {
 		$result = array();
 		$transitionName=strtolower($transitionName);
-		foreach($this->transitions->getTransitionsFrom($ticket->getState()) as $tansition) {
+		foreach($this->transitions->getTransitionsFrom($ticket->getState()) as $transition) {
 			// desired state?
-			if(strtolower($tansition->getName())!=$transitionName) continue;
+			if(strtolower($transition->getName())!=$transitionName) continue;
 
-			$event = new ValidatorEvent($this, $tansition, $ticket);
+			$event = new ValidatorEvent($this, $transition, $ticket);
 			foreach($transition->getValidationTriggers() as $trigger) {
 				$trigger->callTrigger($event);
 				// propagation stopped? 
 				if($event->isPropagationStopped()) break;
 			}
-			// is the transition blocked? -> continue
+			// is the transition blocked? -> continue with next transition
 			if($event->isBlocked()) continue;
-			return $tansition;
+			return $transition;
 		}
 		return null;
 	}
@@ -90,37 +91,37 @@ class Workflow {
 			throw new LogicException('Cannot apply transition "' . $transitionName . '" on ticket "' . $ticket->getId() . '" for workflow "' . $this->name . '".');
 		}
 
-		if(!$this->runBeforeTriggers($ticket, $tansition)) {
+		if(!$this->runBeforeTriggers($ticket, $transition)) {
 			return false;
 		}
 
 		$ticket->setState($transition->getTo());
 
-		if(!$this->runAfterTriggers($ticket, $tansition)) {
+		if(!$this->runAfterTriggers($ticket, $transition)) {
 			return false;
 		}
 
 		return true;
 	}
 
-	private function runBeforeTriggers(Ticket $ticket, Transition $tansition) {
-		$event = new BeforeEvent($this, $tansition, $ticket);
+	private function runBeforeTriggers(Ticket $ticket, Transition $transition) {
+		$event = new BeforeEvent($this, $transition, $ticket);
 		foreach($transition->getBeforeTriggers() as $trigger) {
 			$trigger->callTrigger($event);
 			// propagation stopped? 
 			if($event->isPropagationStopped()) break;
 		}
-		return !$this->isBlocked();
+		return !$event->isBlocked();
 	}
 
-	private function runAfterTriggers(Ticket $ticket, Transition $tansition) {
-		$event = new AfterEvent($this, $tansition, $ticket);
+	private function runAfterTriggers(Ticket $ticket, Transition $transition) {
+		$event = new AfterEvent($this, $transition, $ticket);
 		foreach($transition->getAfterTriggers() as $trigger) {
 			$trigger->callTrigger($event);
 			// propagation stopped? 
 			if($event->isPropagationStopped()) break;
 		}
-		return !$this->isBlocked();
+		return !$event->isBlocked();
 	}
 }
 

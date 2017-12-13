@@ -1,8 +1,7 @@
 <?php
 namespace Isitirio\Workflow\Events;
 
-use Isitirio\Ticket,
-    Isitirio\Workflow\EventInterface,
+use Isitirio\Ticket\Ticket,
     Isitirio\Workflow\Workflow,
     Isitirio\Workflow\Transition;
 
