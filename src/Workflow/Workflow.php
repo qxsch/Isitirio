@@ -26,6 +26,9 @@ class Workflow {
 	public function getInitialState() : string {
 		return $this->initialState;
 	}
+	public function setInitialState(string $initialState) {
+		$this->initialState = $initialState;
+	}
 
 	public function getTransitions() {
 		return $this->transitions;
