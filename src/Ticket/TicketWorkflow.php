@@ -18,6 +18,7 @@ class TicketWorkflow {
 	public function getTicket() : Ticket {
 		return $this->ticket;
 	}
+
         public function getName() : string {
 		return $this->workflow->getName();
 	}
@@ -36,10 +37,10 @@ class TicketWorkflow {
         public function getEnabledTransitionNames() {
 		return $this->workflow->getEnabledTransitionNames($this->ticket);
 	}
-        public function can(Ticket $ticket, string $transitionName) : bool {
+        public function can(string $transitionName) : bool {
 		return $this->workflow->can($this->ticket, $transitionName);
 	}
-        public function apply(Ticket $ticket, string $transitionName) {
+        public function apply(string $transitionName) {
 		return $this->workflow->apply($this->ticket, $transitionName);
 	}
 }	
