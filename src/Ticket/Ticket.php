@@ -6,13 +6,11 @@ use Isitirio\Workflow\WorkflowRegistry;
 class Ticket {
 	private $state;
 	private $id;
-	private $workflow;
 
 	public function __construct(string $id, string $ticketType, string $state) {
 		$this->id = $id;
 		$this->state = $state;
 		$this->ticketType = $ticketType;
-		$this->workflow = WorkflowRegistry::getWorkflowByTicketType($this->ticketType);
 	}
 
 	public function getId() : string {
@@ -32,9 +30,7 @@ class Ticket {
 	}
 
 
-	public function getWorkflow() : Workflow {
-	}
-
-	public function applyTransition($transitionName) {
+	public function getWorkflow() : TicketWorkflow {
+		return new TicketWorkflow($this);
 	}
 }
