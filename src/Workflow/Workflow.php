@@ -10,11 +10,21 @@ use LogicException,
 
 class Workflow {
 	private $name;
+	private $initialState;
 	private $transitions;
 
-	public function __construct(string $name) {
+	public function __construct(string $name, string $initialState) {
 		$this->name = $name;
+		$this->initialState = $initialState;
 		$this->transitions = new TransitionList();
+	}
+
+	public function getName() : string {
+		return $this->name;
+	}
+
+	public function getInitialState() : string {
+		return $this->initialState;
 	}
 
 	public function getTransitions() {

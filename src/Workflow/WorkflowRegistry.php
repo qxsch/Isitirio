@@ -14,12 +14,12 @@ class WorkflowRegistry {
 			throw new LengthException("SupportedTicketTypes is empty.");
 		}
 
-		if($this->hasWorkflowByName($workflow->getName())) {
+		if(self::hasWorkflowByName($workflow->getName())) {
 			throw new OutOfBoundsException("The Workflow with name \"$type\" has already been registered.");
 		}
 		foreach($supportedTicketTypes as $type) {
 			$type = (string) $type;
-			if($this->hasWorkflowByTicketType($type)) {
+			if(self::hasWorkflowByTicketType($type)) {
 				throw new OutOfBoundsException("The Ticket Type \"$type\" has already been registered.");
 			}
 		}
@@ -28,25 +28,25 @@ class WorkflowRegistry {
 
 		foreach($supportedTicketTypes as $type) {
 			$type = (string) $type;
-			self::$ticketType[$type] = $workflow;
+			self::$ticketTypes[$type] = $workflow;
 		}
 		self::$workflowNames[$workflow->getName()] = $workflow;
 	}
 
 	public static function clearWorkflows() {
-		self::$ticketType = array();
+		self::$ticketTypes = array();
 		self::$workflowNames = array();
 	}
 
 	public static function getWorkflowByTicketType(string $type) : ?Workflow {
-		if(isset(self::$ticketType[$type])) {
-			return self::$ticketType[$type];
+		if(isset(self::$ticketTypes[$type])) {
+			return self::$ticketTypes[$type];
 		}
 		return null;
 	}
 
 	public static function hasWorkflowByTicketType(string $type) : bool {
-		return isset(self::$ticketType[$type]);
+		return isset(self::$ticketTypes[$type]);
 	}
 
 	public static function getWorkflowByName(string $name) : ?Workflow {
