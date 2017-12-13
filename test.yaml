@@ -1,0 +1,37 @@
+
+Workflows:
+  "Monitoring Workflow":
+    InitialState: "Open"
+    AppliesToTicketTypes: [ "IT Incident", "IT Problem", "IT Question" ]
+    UseClasses:
+      - Isitirio\Workflow\Triggers\ValidationTriggers
+      - Isitirio\Workflow\Triggers\BeforeTriggers
+      - Isitirio\Workflow\Triggers\AfterTriggers
+    Transitions:
+      "Open":
+        "In Progress":
+          Name: "Start Progress"
+        "Deleted":
+          Name: "Delete"
+          #ValidationTriggers:
+          #BeforeTriggers:
+          #AfterTriggers:
+      "In Progress":
+        "Open":
+          Name: "Back to Open"
+        "Closed":
+          Name: "Close"
+      "Closed":
+        "Open":
+          Name: "Reopen"
+          ValidationTriggers:
+            -
+              Call: ValidationTriggers::BlockAfterTimeout
+              #CreatedTimeout: 90d
+              UpdatedTimeout: 14d
+          BeforeTriggers:
+            -
+              Call: test::callMe
+            -
+              InjectorCall: test::inject
+
