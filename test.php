@@ -4,7 +4,6 @@
 require_once('autoload.php');
 require_once('vendor/autoload.php');
 
-
 $yaml = Isitirio\Yaml::createFromArray(Symfony\Component\Yaml\Yaml::parseFile("test.yaml"));
 
 
@@ -23,34 +22,27 @@ class test {
 		echo "called...\n";
 	}
 }
-/*echo $yaml->dump();
-echo $yaml->dump(true);
-
-
-echo "---------\n";
-
-echo $yaml->get('Workflows.Monitoring Workflow.InitialState');
-echo "\n";
-
-echo $yaml['Workflows']['Monitoring Workflow']['InitialState'];
-echo "\n";
-
-foreach($yaml['Workflows'] as $key => $v) {
-	echo " - $key\n";
-}
-
-echo $yaml->get('Workflows.Monitoring Workflow.InitialState');
-
-
-echo "\n";*/
-
-
-
-
 
 Isitirio\Workflow\WorkflowRegistryBuilder::buildFromYaml($yaml, 'Workflows');
 
 
+function showTicketStatusAndTransitions(Isitirio\Ticket\Ticket $ticket) {
+	echo "CURRENT STATE: " . $ticket->getState() . "\n";
+	echo "Next Transitions: ";
+	print_r($ticket->getWorkflow()->getEnabledTransitionNames());
+}
 
-echo "\n";
+$ticket = new Isitirio\Ticket\Ticket(1234, 'it-incident', '');
+
+echo "ID: " . $ticket->getId() . "\n";
+
+showTicketStatusAndTransitions($ticket);
+
+echo "\n\nTransition to: Start Progress  = "; var_dump($ticket->getWorkflow()->apply('Start Progress'));
+
+showTicketStatusAndTransitions($ticket);
+
+echo "\n\nTransition to: Close  = "; var_dump($ticket->getWorkflow()->apply('Close'));
+
+showTicketStatusAndTransitions($ticket);
 

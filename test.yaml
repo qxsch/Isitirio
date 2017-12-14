@@ -1,8 +1,53 @@
+Global:
+  UseClasses:
+    - Isitirio\Ticket\Customfields\StringField
+
+
+MainViews:
+  "some-group":
+    Name: "Some Group"
+    UseCustomfields: [ "some-multiline" ]
+    AppliesToTicketTypes: [ "it-incident", "it-problem", "it-question" ]
+
+
+SideViews:
+  "some-group":
+    Name: "Some Group"
+    UseCustomfields: [ "some-text" ]
+    AppliesToTicketTypes: [ "it-incident", "it-problem", "it-question" ]
+
+
+TicketTypes:
+  "it-incident":
+    Name: "IT Incident"
+  "it-problem":
+    Name: "IT Problem"
+  "it-question":
+    Name: "IT Question"
+    # can be ignored: Reporter, Asignees, Description, Created, Updated
+    IgnoreStandardFields: [ "Description" ]
+
+
+Customfields:
+  "some-multiline":
+    Name: "some multiline text"
+    InitialValue: ""
+    AppliesToTicketTypes: [ "it-incident", "it-problem", "it-question" ]
+    Class: StringField
+    Multiline: true
+  "some-text":
+    Name: "Some Text"
+    InitialValue: ""
+    AppliesToTicketTypes: [ "it-incident", "it-problem", "it-question" ]
+    Class: StringField
+    Multiline: false
+
+
 
 Workflows:
   "Monitoring Workflow":
     InitialState: "Open"
-    AppliesToTicketTypes: [ "IT Incident", "IT Problem", "IT Question" ]
+    AppliesToTicketTypes: [ "it-incident", "it-problem", "it-question" ]
     UseClasses:
       - Isitirio\Workflow\Triggers\ValidationTriggers
       - Isitirio\Workflow\Triggers\BeforeTriggers
