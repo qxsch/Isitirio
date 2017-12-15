@@ -10,3 +10,8 @@ Requirements:
  * apache or nginx
  
  
+### Credits
+
+ * Project Icons [Designed by makyzz @ Freepik](https://www.freepik.com/free-vector/set-of-web-and-technology-development-icons_1063690.htm)
+ * Symfony Components by Fabien Potencier and others
+ * Semantic-UI Jack Lukic and others
