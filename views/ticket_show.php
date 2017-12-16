@@ -122,15 +122,48 @@
     <div class="ui">
       <div class="isitirio_persons">
 
+
+       <div class="ui two column grid">
+          <div class="row">
+            <div class="column">
+              <b>Created</b>
+            </div>
+            <div class="column">
+              2017-12-12 12:12:00
+            </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <b>Updated</b>
+            </div>
+            <div class="column">
+              2017-12-14 14:14:00
+            </div>
+          </div>
+        </div>
         <div class="ui two column grid">
           <div class="row">
             <div class="column">
-              <p>Assignees</p>
+               <div class="ui segments">
+                 <div class="ui olive segment">
+                   <b>Assignees</b>
+                 </div>
+                 <div class="ui segment">
+                   <p><img class="ui avatar image" src="/semanticui/jane.jpg"><span>Jane Doe</span></p>
+                   <p><img class="ui avatar image" src="/semanticui/john.jpg"><span>John Doe</span></p>
+                   <p><img class="ui avatar image" src="/semanticui/chris.jpg"><span>Chris Mastermind</span></p>
+                 </div>
+               </div>
             </div>
             <div class="column">
-               <p><img class="ui avatar image" src="/semanticui/jane.jpg"><span>Jane Doe</span></p>
-               <p><img class="ui avatar image" src="/semanticui/john.jpg"><span>John Doe</span></p>
-               <p><img class="ui avatar image" src="/semanticui/chris.jpg"><span>Chris Mastermind</span></p>
+               <div class="ui segments">
+                 <div class="ui teal segment">
+                   <b>Reporters</b>
+                 </div>
+                 <div class="ui segment">
+                   <p><img class="ui avatar image" src="/semanticui/chris.jpg"><span>Chris Mastermind</span></p>
+                 </div>
+               </div>
             </div>
           </div>
         </div>
