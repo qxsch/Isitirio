@@ -89,7 +89,7 @@
 
 </div>
 
-<script src="/semanticui/isitirio.js"></script>
+<script src="/assets/js/isitirio.js"></script>
 <script type="text/javascript">
 $("[access-denied]").each(function(index, value) {
     var n = $(value);

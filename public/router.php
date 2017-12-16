@@ -1,6 +1,9 @@
 <?php
 
 if (php_sapi_name() == 'cli-server') {
+	if(preg_match('@^/assets/@', $_SERVER["REQUEST_URI"])) {
+		return false;
+	}
 	if(preg_match('@^/semanticui/@', $_SERVER["REQUEST_URI"])) {
 		return false;
 	}

@@ -44,18 +44,97 @@
 <div class="ui two column stackable divided grid">
   <div class="ten wide column">
     <div class="ui">
-       Content<br />Content<br />Content<br />Content<br />Content<br />
-       Content<br />Content<br />Content<br />Content<br />Content<br />
-       Content<br />Content<br />Content<br />Content<br />Content<br />
-       Content<br />Content<br />Content<br />Content<br />Content<br />
-       Content<br />Content<br />Content<br />Content<br />Content<br />
-       Content<br />Content<br />Content<br />Content<br />Content<br />
-       Content<br />Content<br />Content<br />Content<br />Content<br />
-       Content<br />Content<br />Content<br />Content<br />Content<br />
+       <div class="isitirio_basics">
+         <div class="ui two column grid">
+           <div class="row">
+             <div class="column">
+               <div class="ui two column grid">
+                 <div class="row">
+                   <div class="column">
+                     <b>Type</b>
+                   </div>
+                   <div class="column">
+                     <a class="ui image label">
+                       <img src="/assets/tickettype-icons/problem.png">
+                       IT Incident
+                     </a>
+                   </div>
+                 </div>
+               </div>
+             </div>
+             <div class="column">
+               <div class="ui two column grid">
+                 <div class="row">
+                   <div class="column">
+                     <b>Status</b>
+                   </div>
+                   <div class="column">
+                     <a class="ui yellow image label">Open</a>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+           <div class="row">
+             <div class="column">
+               <div class="ui two column grid">
+                 <div class="row">
+                   <div class="column">
+                     <b>Labels</b>
+                   </div>
+                   <div class="column">
+                     <p class="ui tag label" style="margin-bottom:2px;">UEP Resolved</p>
+                     <p class="ui tag label" style="margin-bottom:2px;">incident</p>
+                   </div>
+                 </div>
+               </div>
+             </div>
+             <div class="column">
+               <div class="ui two column grid">
+                 <div class="row">
+                   <div class="column">
+                     <b>Priority</b>
+                   </div>
+                   <div class="column">
+                     <p>...</p>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+
+       <div class="ui horizontal divider">Description</div>
+       <div class="isitirio_description">
+         Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content<br />
+         Content<br />Content<br />Content<br />Content<br />Content<br />
+         Content<br />Content<br />Content<br />Content<br />Content<br />
+         Content<br />Content<br />Content<br />Content<br />Content<br />
+         Content<br />Content<br />Content<br />Content<br />Content<br />
+         Content<br />Content<br />Content<br />Content<br />Content<br />
+         Content<br />Content<br />Content<br />Content<br />Content<br />
+         Content<br />Content<br />Content<br />Content<br />Content<br />
+       </div>
      </div>
   </div>
   <div class="six wide column">
-    <div class="ui">Content</div>
+    <div class="ui">
+      <div class="isitirio_persons">
+
+        <div class="ui two column grid">
+          <div class="row">
+            <div class="column">
+              <p>Assignees</p>
+            </div>
+            <div class="column">
+               Jane Doe
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>
 
