@@ -96,7 +96,7 @@
                      <b>Priority</b>
                    </div>
                    <div class="column">
-                     <p>...</p>
+                     <p>Normal</p>
                    </div>
                  </div>
                </div>
