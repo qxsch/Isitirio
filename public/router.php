@@ -21,6 +21,7 @@ if (php_sapi_name() == 'cli-server') {
 			$a = [
 				[ "name" => "John Doe", "value" => "usr01" ],
 				[ "name" => "Jane Doe", "value" => "usr02" ],
+				[ "name" => "Chris Mastermind", "value" => "administrator" ],
 			];
 			$r = ['success' => true, 'results' => []];
 			foreach($a as $v) {

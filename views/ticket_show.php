@@ -1,5 +1,5 @@
 <div class="ui masthead vertical segment">
-  <h1 class="ui header">Theming</h1>
+  <h1 class="ui header"><img class="ui circular image" src="/assets/project-icons/erlenmeyer-flask.png" /> a big fat problem ticket</h1>
 </div>
 
 <div class="ui masthead vertical segment">
@@ -128,7 +128,9 @@
               <p>Assignees</p>
             </div>
             <div class="column">
-               Jane Doe
+               <p><img class="ui avatar image" src="/semanticui/jane.jpg"><span>Jane Doe</span></p>
+               <p><img class="ui avatar image" src="/semanticui/john.jpg"><span>John Doe</span></p>
+               <p><img class="ui avatar image" src="/semanticui/chris.jpg"><span>Chris Mastermind</span></p>
             </div>
           </div>
         </div>
