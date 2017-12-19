@@ -19,9 +19,9 @@ if (php_sapi_name() == 'cli-server') {
 			}
 		
 			$a = [
-				[ "name" => "John Doe", "value" => "usr01" ],
-				[ "name" => "Jane Doe", "value" => "usr02" ],
-				[ "name" => "Chris Mastermind", "value" => "administrator" ],
+				[ 'name' => '<img class="ui avatar image" src="/semanticui/john.jpg" /> '.htmlspecialchars('John Doe'), 'value' => 'usr01' ],
+				[ 'name' => '<img class="ui avatar image" src="/semanticui/jane.jpg" /> '.htmlspecialchars('Jane Doe'), 'value' => 'usr02' ],
+				[ 'name' => '<img class="ui avatar image" src="/semanticui/chris.jpg" /> '.htmlspecialchars('Chris Mastermind'), 'value' => 'administrator' ],
 			];
 			$r = ['success' => true, 'results' => []];
 			foreach($a as $v) {

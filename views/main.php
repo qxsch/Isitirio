@@ -8,7 +8,8 @@
 
   <title>Isitirio</title>
   <link rel="stylesheet" type="text/css" href="/semanticui/semantic.css" />
-  <link rel="stylesheet" type="text/css" href="/semanticui/components/dropdown.min.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="/semanticui/components/dropdown.min.css" /> -->
+  <link rel="stylesheet" type="text/css" href="/assets/css/isitirio.css" />
   <script src="/semanticui/jquery.min.js"></script>
   <script src="/semanticui/semantic.js"></script>
   <script src="/semanticui/components/dropdown.min.js"></script>

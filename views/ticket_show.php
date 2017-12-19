@@ -29,7 +29,7 @@
   <div class="ui flowing basic admission popup" id="i_assignee_popup">
     <h4>Assignees</h4>
     <div class="ui multiple search selection dropdown" id="i_assignee">
-      <input type="hidden">
+      <input type="hidden" name="assignees" />
       <i class="dropdown icon"></i>
       <input type="text" class="search">
       <div class="default text">Select a user...</div>
@@ -148,10 +148,7 @@
                  <div class="ui olive segment">
                    <b>Assignees</b>
                  </div>
-                 <div class="ui segment">
-                   <p><img class="ui avatar image" src="/semanticui/jane.jpg"><span>Jane Doe</span></p>
-                   <p><img class="ui avatar image" src="/semanticui/john.jpg"><span>John Doe</span></p>
-                   <p><img class="ui avatar image" src="/semanticui/chris.jpg"><span>Chris Mastermind</span></p>
+                 <div class="ui segment" id="i_assignee_list">
                  </div>
                </div>
             </div>
@@ -173,19 +170,49 @@
   </div>
 </div>
 
+<div class="ui top attached tabular menu">
+  <div class="item">Comment</div>
+  <div class="active item">Comment</div>
+</div>
+<div class="ui bottom attached active tab segment">
+  <p></p>
+  <p></p>
+</div>
+
 <script type="text/javascript">
 $("#i_main .dropdown[dropdown]").dropdown();
 $("#i_main #i_assignee").each(function(index, value) {
-  console.log("hi");
+  var initialized = false;
   var n = $(value);
   n.dropdown({
+    values: [
+      { name: '<img class="ui avatar image" src="/semanticui/john.jpg" /> John Doe', value: 'usr01', selected:true }
+    ],
     apiSettings: {
        url: '/rest/users/?search={query}' 
     },
+    saveRemoteData: false,
     onChange: function(value, text, choice) {
-       console.log("setting new assignees: " + value);
+      if(initialized) {
+         console.log("setting new assignees: " + value);
+      }
+      // updating the assignees
+      setTimeout(function() {
+        var ahtml = '';
+        $("#i_assignee > .ui.label[data-value]").each(function(i, v) {
+          ahtml += '<p>' + $(v).html().replace(/<i class="delete icon"><\/i>/g, '') + '</p>';
+        });
+        if(ahtml=='') {
+          $('#i_assignee_list').html('<i>Unassigned</i>');
+        }
+        else {
+          $('#i_assignee_list').html(ahtml);
+        }
+      }, 800);
     }
   });
+  // mark as initialized
+  setTimeout(function() { initialized = true; }, 800);
 });
 
 </script>
