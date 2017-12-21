@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="style.css" rel="stylesheet" />
+<meta charset=utf-8 />
+<title>CY Demo</title>
+<script src="jquery.min.js"></script>
+<script src="cytoscape.min.js"></script>
+<script src="dagre.min.js"></script>
+<script src="cytoscape-dagre.js"></script>
+<style>
+#cy {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+</style>
+<script type="text/javascript">
+$(function(){ // on dom ready
+
+var cy = cytoscape({
+  
+  container: document.getElementById('cy'),
+  
+  style: [
+    {
+      selector: 'node',
+      style: {
+	    'shape': 'roundrectangle',
+		'width': 'label',
+		'border-width': '10px',
+		'border-color': '#11479e',
+        'content': 'data(label)',
+        'text-valign': 'center',
+        'text-halign': 'center',
+        'background-color': '#11479e',
+		'color': '#ffffff'
+      }
+    },
+    {
+      selector: 'edge',
+      style: {
+        'curve-style': 'bezier',
+        'width': 4,
+        'target-arrow-shape': 'triangle',
+        'line-color': '#9dbaea',
+        'target-arrow-color': '#9dbaea'
+      }
+    }
+  ],
+  
+  
+  elements: {
+    nodes: [
+      { data: { id: 'open', label: 'Open' } },
+      { data: { id: 'progress', label: 'In Progress' } },
+      { data: { id: 'deleted', label: 'Deleted' } },
+      { data: { id: 'closed', label: 'Closed' } }
+    ],
+    edges: [
+      { data: { id: 'e1', source: 'open', target: 'progress', label: 'Start progress' }, classes: 'primary'},
+      { data: { id: 'e2', source: 'progress', target: 'open' } },
+      { data: { id: 'e3', source: 'open', target: 'deleted' }, classes: 'primary' },
+      { data: { id: 'e4', source: 'progress', target: 'closed' } },
+      { data: { id: 'e5', source: 'closed', target: 'open' } }
+    ],
+  },
+  
+  layout: {
+    //name: 'cose',
+    name: 'dagre'
+  },
+  
+  ready: function(){
+    window.cy = this;
+  },  
+});
+
+
+
+  
+  
+}); // on dom ready
+</script>
+</head>
+<body>
+<div id="cy"></div>
+</body>
+</html>

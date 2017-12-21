@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>IQL Demo</title>
+</head>
+<script src="jquery.min.js"></script>
+<style>
+#log {
+	margin:40px;
+	width:100%;
+	font-size:24px;
+}
+
+.inputmask {
+	margin:40px;
+	position:relative;
+}
+.inputmask input {
+	width:100%;
+	font-size:24px; 
+}
+.inputmask .question {
+	position: absolute;
+	right:0px;
+	top:0px;
+	display:block;
+	font-size:24px; 
+	cursor:pointer;
+}
+
+#help {
+	margin: auto 24px;
+	border:1px solid red;
+	display:none;
+	position: absolute;
+	top:10px;
+	left: 10px;
+	right: 10px;
+	background-color:#FFFCFC;
+	z-index:10;
+}
+#help .close {
+	position: absolute;
+	right:5px;
+	top:0px;
+	display:block;
+	font-size:24px; 
+	cursor:pointer;
+}
+#help > div {
+	margin:24px;
+}
+#help p {
+	font-size:20px;
+	line-height:30px;
+	margin:0px 0px 15px 0px;
+}
+#help p v {
+	color: #FF0000;
+	background: #FFEEEE;
+	text-decoration-line: underline;
+	text-decoration-color: red;
+	text-decoration-style: dotted;
+}
+#help p r {
+	color: #0000FF;
+	background: #EEEEFF;
+}
+#help p o {
+	font-size:28px;
+	color:#F08040;
+}
+#help pre {
+	font-size:20px;
+}
+</style>
+<body>
+<div id="help">
+<span class="close" onclick="$('#help').toggle();">X</span>
+<div>
+<p>Query Syntax:</p>
+<p><v><u>iql</u></v> <o>=</o> &nbsp;  <v>expr</v> &nbsp; <v>orderBy</v>  &nbsp; <o>|</o> &nbsp; <v>expr</v></p>
+<p><v>expr</v> <o>=</o> &nbsp; ( <v>expr</v> ) &nbsp; <o>|</o> &nbsp; <v>expr</v> or <v>expr</v> &nbsp; <o>|</o> &nbsp; <v>expr</v> and <v>expr</v> &nbsp; <o>|</o> &nbsp; <v>keyValueComp</v> or <v>expr</v> &nbsp; <o>|</o> &nbsp; <v>keyValueComp</v> or <v>expr</v> &nbsp; <o>|</o> &nbsp; <v>keyValueComp</v></p>
+<p><v>keyValueComp</v> <o>=</o> &nbsp; <v>fieldName</v> &nbsp; <v>comparer</v> &nbsp; <v>value</v> &nbsp; <o>|</o> &nbsp; <v>fieldName</v> &nbsp; <v>incomparer</v> &nbsp; ( <v>values</v> )</p>
+<p><v>fieldName</v> <o>=</o> &nbsp; <r>[a-zA-Z0-9_%-]+</r> &nbsp; <o>|</o> &nbsp; <r>"(?:[^"\\\\]|\\.)*"</r></p>
+<p><v>value</v> <o>=</o> &nbsp; <r>[a-zA-Z0-9_%-]+</r> &nbsp;&nbsp; <o>|</o> &nbsp;&nbsp; <r>"(?:[^"\\\\]|\\.)*"</r></p>
+<p><v>values</v> <o>=</o> &nbsp; <v>value</v> &nbsp; <o>|</o> &nbsp; <v>value</v> &nbsp;,&nbsp; <v>values</v></p>
+<p><v>comparer</v> <o>=</o> &nbsp; != &nbsp; <o>|</o> &nbsp; == &nbsp; <o>|</o> &nbsp;  >= &nbsp; <o>|</o> &nbsp; <= &nbsp; <o>|</o> &nbsp; = &nbsp; <o>|</o> &nbsp; like &nbsp; <o>|</o> &nbsp; not like</p>
+<p><v>incomparer</v> <o>=</o> &nbsp; in &nbsp; <o>|</o> &nbsp; not in</p>
+<p><v>orderBy</v> <o>=</o> &nbsp; order by <v>fieldOrders</v></p>
+<p><v>fieldOrders</v> <o>=</o> &nbsp; <v>fieldNameOrder</v> &nbsp; <o>|</o> &nbsp; <v>fieldNameOrder</v> &nbsp;,&nbsp; <v>fieldOrders</v> </p>
+<p><v>fieldNameOrder</v> <o>=</o> &nbsp; <v>fieldName</v> &nbsp; <o>|</o> &nbsp; <v>fieldName</v> <v>ordering</v> </p>
+<p><v>ordering</v> <o>=</o> &nbsp; asc &nbsp; <o>|</o> &nbsp; desc &nbsp; <o>|</o> &nbsp; ascending &nbsp; <o>|</o> &nbsp; descending </p>
+<br/>
+<p>Examples:</p>
+<pre>summary = "hello world" or (summary like %hello% and summary not like %bye%)</pre>
+<pre>assignees in ("mark", "brian") and "Reference Number" >= 12000 order by summary, date desc</pre>
+</div>
+</div>
+<div class="inputmask"style="">
+<input id="sqlquery" name="query" /><div>
+<span class="question" onclick="$('#help').toggle();">?</span>
+</div>
+<pre id="log">
+</pre>
+
+<script type="text/javascript">
+function sqlparse(sql) {
+    var log = "";
+	var pos = 0;
+    // statement = expr (order_clause)?
+	function consumeRegex(string, regexstr) {
+		regex = new RegExp('^' + regexstr, "i");
+		var m = regex.exec(string);
+		if(m) {
+		    pos += m[0].length;
+			return {str: string.substring(m[0].length), match: m};
+		}
+        return {str: string, match: null};
+	}
+	
+	
+	function parseValue(s) {
+	    var m = consumeRegex(s, '\\s*"');
+		if(m.match) {
+		    m = consumeRegex(m.str, '(?:[^"\\\\]|\\.)*');
+			if(m.match) {
+			   var m2 = consumeRegex(m.str, '"');
+			   if(m2.match) {
+			       return {type: "value", str: m2.str, value: m.match[0], finished: true};
+			   }
+			   else {
+			       return {type: "value", str: m2.str, value: m.match[0], finished: false};
+			   }
+			}
+		}
+		else {
+		    m = consumeRegex(s, '\\s*([a-zA-Z0-9_%-]+)');
+			if(m.match) {
+				return {type: "value", str: m.str, value: m.match[1], finished: true};
+			}
+		}
+		throw "Invalid Value";
+	}
+	
+	function parseComparer(s) {
+		var m = consumeRegex(s, '((\\s*(!=|==|<=|>=|=|<|>))|(\\s+(like|not\\s+like|in|not\\s+in)\\s))');
+		if(m.match) {
+		    var op = m.match[0].trim().toLowerCase().replace(/\s+/, ' ');
+			return {type: "comparer", str: m.str, value: op, finished: true};
+		}
+		throw "Invalid Comparer";
+	}
+	
+	function parseInValueGroup(s, field) {
+		var m = consumeRegex(s, '\\s*\\(');
+		var values = [];
+		if(m.match) {
+			s = m.str;
+			while(s != '') {
+				m = parseValue(s);
+				values.push({ type: "value", value: m.value, finished: m.finished, field: field});
+				if(!m.finished) {
+					return m;
+				}
+				s = m.str;
+				m = consumeRegex(s, '\\s*(,|\\))');
+				if(m.match) {
+					s = m.str;
+					if(m.match[1]==')') {
+						return { type: "in", str: s, value: values, finished:true };
+					}
+				}
+				else {
+					throw "Invalid in value group"
+				}
+			}
+			return { type: "in", str: s, value: values, finished:false };
+		}
+		
+		throw "Invalid in value group"
+	}
+	
+	function parseKeyValueComp(s) {
+	    var values = [];
+		var v;
+		v = parseValue(s);
+		v.type = "field";
+		var field = v.value;
+		values.push({ type: "field", value: v.value, finished: v.finished });
+		if(!v.finished) return v;
+		s = v.str;
+		 
+		v = parseComparer(s);
+		values.push({ type: v.type, value: v.value, finished: v.finished }); 
+		if(!v.finished) return v;
+		s = v.str;
+		
+		if(v.value=="in" || v.value=="not in") {
+			v = parseInValueGroup(s, field);
+			values.push({ type: v.type, value: v.value, finished: v.finished, field: field });
+			if(!v.finished) return v;
+			s = v.str;
+		}
+		else {
+		 	v = parseValue(s);
+			values.push({ type: v.type, value: v.value, finished: v.finished, field: field });
+			if(!v.finished) return v;
+			s = v.str;
+		}
+
+		return { type: "keyvaluecompare", str: s, value: values, finished: true };		
+	}
+	
+	function parseExpr(s, recursive) {
+		var values = [];
+	    var v = consumeRegex(s, '\\s*\\(');
+		if(v.match) {
+			s = v.str;
+			
+			v = parseExpr(s, true);
+			values.push({ type: v.type, value: v.value, finished: v.finished });
+			s = v.str;
+
+			m = consumeRegex(s, '\\s*\\)');
+			if(m.match) {
+				s = m.str;
+			}
+			else {
+				throw "Invalid expr";
+			}
+		}
+		else {		
+			v = parseKeyValueComp(s);
+			values.push({ type: v.type, value: v.value, finished: v.finished });
+			if(!v.finished) return v;
+			s = v.str;
+		}
+		
+
+		if(recursive) {
+			while(s!='') {
+				v = consumeRegex(s, '\\s+(and|or)\\s+');
+				if(v.match) {
+					values.push({ type: "binaryoperator", value: v.match[1].toLowerCase(), finished: true });
+					s = v.str;
+					
+					v = parseExpr(s, false);
+					for(var i in v.value) {
+						values.push({ type: v.value[i].type, value: v.value[i].value, finished: v.value[i].finished });
+					}
+					if(!v.finished) return v;
+					s = v.str;
+				}
+				else {
+					break;
+				}
+			}
+		}
+		
+		//console.log({ type: "expr", str: s, value: values, finished: true });		
+		return { type: "expr", str: s, value: values, finished: true };
+	}
+	
+	function parseIQL(s) {
+		v = parseExpr(s, true);
+		return v;
+	}
+	
+	
+	function dumpValueTree(v, indent) {
+		var indentstr='';
+		for(var i=0; i<indent; i++) indentstr += "   ";
+		if(Array.isArray(v)) {
+			for(var i in v) {
+				dumpValueTree(v[i], indent);
+			}
+		}
+		else if(Array.isArray(v.value)) {
+			log += indentstr + "type: " + v.type + "  finished: " + v.finished + "  value:\n";
+			for(var i in v.value) {
+				dumpValueTree(v.value[i], indent+1);
+			}
+		}
+		//else if(typeof v.value === 'object') {
+		//	dumpValueTree(v.value, indent+1);
+		//}
+		else {
+			log += indentstr + "type: " + v.type + "  finished: " + v.finished + "  value: " + v.value + "\n";
+		}
+	}
+	
+	
+	try {
+		var out = parseIQL(sql);
+		//log += "\n" + JSON.stringify(values) + "\n";
+		dumpValueTree(out, 0);
+
+	}
+	catch(err) {
+
+		log += "Error: "+err+"\n";
+	}
+	log += "\n";
+	$('#log').html($("<div>").text(log).html());
+}
+
+
+$('#sqlquery').on('input', function(event) {
+   sqlparse($(this).val());
+   /*try {
+		console.log(sqlparse($(this).val()));
+   }
+   catch(err) {
+      console.log(err);
+   }*/
+});
+</script>
+</body>
+</html>

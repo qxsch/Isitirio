@@ -10,6 +10,9 @@ if (php_sapi_name() == 'cli-server') {
 	if(preg_match('@\.(png|jpg|gif)$@', $_SERVER["REQUEST_URI"])) {
 		return false;
 	}
+	if(preg_match('@^/demo/@', $_SERVER["REQUEST_URI"])) {
+		return false;
+	}
 	if(preg_match('@^/rest/@', $_SERVER["REQUEST_URI"])) {
 		if(isset($_GET['search'])) {
 			$words = [];
