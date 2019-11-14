@@ -1,29 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-require_once('autoload.php');
-require_once('vendor/autoload.php');
-
-$yaml = Isitirio\Yaml::createFromArray(Symfony\Component\Yaml\Yaml::parseFile("test.yaml"));
-
-
-class test {
-	public static function inject(array $configuration) {
-		return new Isitirio\Workflow\Trigger(
-			function(Isitirio\Workflow\Events\EventInterface $event, array $configuration) {
-				echo "hi";
-			},
-			$configuration
-		);
-
-	}
-
-	public static function callMe(Isitirio\Workflow\Events\EventInterface $event, array $configuration) {
-		echo "called...\n";
-	}
-}
-
-Isitirio\Workflow\WorkflowRegistryBuilder::buildFromYaml($yaml, 'Workflows');
+require_once('test-setup.php');
 
 
 function showTicketStatusAndTransitions(Isitirio\Ticket\Ticket $ticket) {

@@ -21,15 +21,15 @@ class Transition {
 		$this->afterTriggers = new TriggerList();
 	}
 
-	public function getName() {
+	public function getName() : string {
 		return $this->name;
 	}
 
-	public function getFrom() {
+	public function getFrom() : string {
 		return $this->from;
 	}
 
-	public function getTo() {
+	public function getTo() : string {
 		return $this->to;
 	}
 

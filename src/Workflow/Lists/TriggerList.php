@@ -2,7 +2,8 @@
 namespace Isitirio\Workflow\Lists;
 
 use InvalidArgumentException,
-    Isitirio\Workflow\Trigger;
+    Isitirio\Workflow\Trigger,
+    Isitirio\BaseTypes\AbstractTypedList;
 
 class TriggerList extends AbstractTypedList {
 	protected function throwOnInvalidInstance($object) {

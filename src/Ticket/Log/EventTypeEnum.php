@@ -2,7 +2,7 @@
 
 namespace Isitirio\Ticket\Log;
 
-use Isitirio\GenericEnum;
+use Isitirio\BaseTypes\GenericEnum;
 
 class EventTypeEnum extends GenericEnum {
 	const Message = 1;

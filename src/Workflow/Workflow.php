@@ -31,11 +31,11 @@ class Workflow {
 		$this->initialState = $initialState;
 	}
 
-	public function getTransitions() {
+	public function getTransitions() : TransitionList {
 		return $this->transitions;
 	}
 
-	public function getEnabledTransitions(Ticket $ticket) {
+	public function getEnabledTransitions(Ticket $ticket) : array {
 		$result = array();
 		foreach($this->transitions->getTransitionsFrom($ticket->getState()) as $transition) {
 			$event = new ValidatorEvent($this, $transition, $ticket);
@@ -46,15 +46,15 @@ class Workflow {
 			}
 			// is the transition blocked? -> continue
 			if($event->isBlocked()) continue;
-			$result[]=$transition;
+			$result[] = $transition;
 		}
 		return $result;
 	}
 
-	public function getEnabledTransitionNames(Ticket $ticket) {
-		$names=array();
+	public function getEnabledTransitionNames(Ticket $ticket) : array {
+		$names = array();
 		foreach($this->getEnabledTransitions($ticket) as $transition) {
-			$names[strtolower($transition->getName())]=$transition->getName();
+			$names[strtolower($transition->getName())] = $transition->getName();
 		}
 
 		return array_values($names);
@@ -62,10 +62,10 @@ class Workflow {
 
 	private function getFirstTransitionByName(Ticket $ticket, string $transitionName) {
 		$result = array();
-		$transitionName=strtolower($transitionName);
+		$transitionName = strtolower($transitionName);
 		foreach($this->transitions->getTransitionsFrom($ticket->getState()) as $transition) {
 			// desired state?
-			if(strtolower($transition->getName())!=$transitionName) continue;
+			if(strtolower($transition->getName()) != $transitionName) continue;
 
 			$event = new ValidatorEvent($this, $transition, $ticket);
 			foreach($transition->getValidationTriggers() as $trigger) {
@@ -82,12 +82,12 @@ class Workflow {
 
 	public function can(Ticket $ticket, string $transitionName) : bool {
 		$transiton = $this->getFirstTransitionByName($ticket, $transitionName, true);
-		return $transiton!==null;
+		return $transiton !== null;
 	}
 
 	public function apply(Ticket $ticket, string $transitionName) {
 		$transition = $this->getFirstTransitionByName($ticket, $transitionName, true);
-		if($transition===null) {
+		if($transition === null) {
 			throw new LogicException('Cannot apply transition "' . $transitionName . '" on ticket "' . $ticket->getId() . '" for workflow "' . $this->name . '".');
 		}
 

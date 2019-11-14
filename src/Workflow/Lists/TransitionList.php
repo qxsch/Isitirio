@@ -3,7 +3,8 @@ namespace Isitirio\Workflow\Lists;
 
 use InvalidArgumentException,
     SplObjectStorage,
-    Isitirio\Workflow\Transition;
+    Isitirio\Workflow\Transition,
+    Isitirio\BaseTypes\AbstractTypedList;
 
 class TransitionList extends AbstractTypedList {
 	private $fromStates = array();
