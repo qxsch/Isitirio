@@ -8,7 +8,12 @@ Requirements:
    * yaml ~4.0
    * event-dispatcher ~4.0
  * apache or nginx
- 
+
+# Features
+ * multiple reporters
+ * multiple assignees
+
+![alt text](screenshot.png)
  
 ### Credits
 
