@@ -1,10 +1,10 @@
 <?php
 
-namespace Isitirio\Ticket\Log;
+namespace Isitirio\Ticket\History;
 
 use Isitirio\BaseTypes\GenericEnum;
 
-class EventTypeEnum extends GenericEnum {
+class HistoryTypeEnum extends GenericEnum {
 	const Message = 1;
 	const WorkflowTransition = 2;
 	const FieldCreation = 3;

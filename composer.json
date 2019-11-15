@@ -5,6 +5,7 @@
         "symfony/security-http": "~4.0",
         "symfony/routing": "~4.0",
         "symfony/dependency-injection": "~4.0",
-        "symfony/security-core": "~4.0"
+        "symfony/security-core": "~4.0",
+        "psr/log": "^1.1"
     }
 }

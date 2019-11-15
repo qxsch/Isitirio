@@ -16,8 +16,8 @@ class Ticket {
 		}
 	}
 
-	public function getLog() {
-		return new TicketLog($this);
+	public function getHistory() {
+		return new TicketHistory($this);
 	}
 
 	public function getId() : string {
