@@ -140,6 +140,21 @@ class ImmutableUTF8String implements StringInterface {
 		return new static($val, $this->c);
 	}
 
+	public function matchRegex($pattern, int $offset=0) : ?Regex\Match {
+		if(\preg_match(((string)$pattern) . 'u', $this->str, $m, PREG_OFFSET_CAPTURE, $offset)) {
+			return new Regex\Match($m);
+		}
+		return null;
+	}
+
+	public function matchAllRegex($pattern, int $offset=0) : ?Regex\Matches {
+		if(\preg_match_all(((string)$pattern) . 'u', $this->str, $m, PREG_OFFSET_CAPTURE | PREG_SET_ORDER, $offset)) {
+			return new Regex\Matches($m);
+		}
+		return null;
+	}
+
+
 	public function substr(int $start, int $length=null) : StringInterface {
 		$val = \mb_substr($this->str, $start, $length, 'UTF-8');
 		if($val === null || $val === false) {

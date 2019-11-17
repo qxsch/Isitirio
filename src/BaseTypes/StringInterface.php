@@ -22,6 +22,10 @@ interface StringInterface extends \Countable, \Iterator, \ArrayAccess {
 
 	public function replaceRegex($pattern, $replacement, int $limit=-1) : StringInterface;
 
+	public function matchRegex($pattern, int $offset=0) : ?Regex\Match;
+
+	public function matchAllRegex($pattern, int $offset=0) : ?Regex\Matches;
+
 	public function substr(int $start, int $length=null) : StringInterface;
 
 	public function substring(int $start, int $length=null) : StringInterface;
