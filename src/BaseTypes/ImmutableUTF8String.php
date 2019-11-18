@@ -140,6 +140,14 @@ class ImmutableUTF8String implements StringInterface {
 		return new static($val, $this->c);
 	}
 
+	public function splitRegex($pattern, int $limit = -1) : array {
+		$arr = array();
+		foreach(\preg_split(((string)$pattern) . 'u', $this->str, $limit) as $a) {
+			$arr[] = new static($a);
+		}
+		return $arr;
+	}
+
 	public function matchRegex($pattern, int $offset=0) : ?Regex\Match {
 		if(\preg_match(((string)$pattern) . 'u', $this->str, $m, PREG_OFFSET_CAPTURE, $offset)) {
 			return new Regex\Match($m);
@@ -168,7 +176,11 @@ class ImmutableUTF8String implements StringInterface {
 	}
 
 	public function explode($delimiter, int $limit = PHP_INT_MAX) : array {
-		return \explode((string)$delimiter, $this->str, $limit);
+		$arr = array();
+		foreach(\explode((string)$delimiter, $this->str, $limit) as $a) {
+			$arr[] = new static($a);
+		}
+		return $arr;
 	}
 
 	public function split($delimiter, int $limit = PHP_INT_MAX) : array {
