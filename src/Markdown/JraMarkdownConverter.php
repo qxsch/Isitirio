@@ -35,7 +35,7 @@ class JraMarkdownConverter {
 			$prefix = \mb_substr($match[1], -1, null, 'UTF-8');
 			if($prefix == '#') $prefix = '1.';
 
-			return \str_repeat(' ', $len) . $prefix + $match[2];
+			return \str_repeat(' ', $len) . $prefix . $match[2];
 		});
 
 		// headers, must be after numbered lists
@@ -55,7 +55,7 @@ class JraMarkdownConverter {
 			$lines = (new ImmutableUTF8String($match[1])).splitRegex('/\r?\n/m');
 			$l = count($lines);
 			for($i = 0; $i < $l; $i++) {
-				$lines[$i] = '> ' + $lines[$i];
+				$lines[$i] = '> ' . $lines[$i];
 			}
 
 			return \implode("\n", $lines);
