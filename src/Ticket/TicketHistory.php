@@ -21,15 +21,15 @@ class TicketHistory implements \Countable, \IteratorAggregate {
 	}
 
 	public function get(int $offset=0, int $limit=50) {
-		return $this->prvodier->select($ticket->getId(), $offset, $limit);
+		return $this->provider->select($ticket->getId(), $offset, $limit);
 	}
 
 	public function getIterator() {
-		return $this->prvodier->select($ticket->getId());
+		return $this->provider->select($ticket->getId());
 	}
 
 	public function count() : int {
-		return $this->prvodier->selectCount($ticket->getId());
+		return $this->provider->selectCount($ticket->getId());
 	}
 }
 
