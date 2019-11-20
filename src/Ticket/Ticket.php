@@ -22,19 +22,26 @@ class Ticket {
 		}
 	}
 
-	public function setFromArray(array $arr) {
+	public function setFromArray(array $arr) : int {
+		$setCount = 0;
 		if(isset($arr['summary'])) {
 			$this->summary = (string)$arr['summary'];
+			$setCount++;
 		}
 		if(isset($arr['description'])) {
 			$this->description = (string)$arr['description'];
+			$setCount++;
 		}
 		if(isset($arr['created'])) {
 			$this->created = self::getImmutableDateTime($arr['created']);
+			$setCount++;
 		}
 		if(isset($arr['modified'])) {
 			$this->modified = self::getImmutableDateTime($arr['modified']);
+			$setCount++;
 		}
+
+		return $setCount;
 	}
 
 	public function getId() : string {
