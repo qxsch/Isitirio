@@ -3,11 +3,13 @@ namespace Isitirio\Ticket;
 
 use Isitirio\Ticket\History\HistoryEventInterface;
 
-class TicketHistory implements \Countable, \Iterator {
+class TicketHistory implements \Countable, \IteratorAggregate {
 	private $ticket;
+	private $provider;
 
 	public function __construct(Ticket $ticket) {
 		$this->ticket = $ticket;
+		$this->provider = History\ProviderRegistry::get();
 	}
 
 	public function getTicket() : Ticket {
@@ -15,32 +17,19 @@ class TicketHistory implements \Countable, \Iterator {
 	}
 
 	public function append(HistoryEntryInterface $event) {
-		
+		return $this->provider->insert($ticket->getId(), $event);
 	}
 
-	public function get($offset=0, $limit=50) {
+	public function get(int $offset=0, int $limit=50) {
+		return $this->prvodier->select($ticket->getId(), $offset, $limit);
+	}
+
+	public function getIterator() {
+		return $this->prvodier->select($ticket->getId());
 	}
 
 	public function count() : int {
-		return 0;
-	}
-
-	public function current() {
-		return null;
-	}
-
-	public function key() {
-		return null;
-	}
-
-	public function next() {
-	}
-
-	public function rewind() {
-	}
-
-	public function valid() : bool {
-		return false;
+		return $this->prvodier->selectCount($ticket->getId());
 	}
 }
 
