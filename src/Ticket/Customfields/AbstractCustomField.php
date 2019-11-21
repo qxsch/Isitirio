@@ -33,7 +33,7 @@ abstract class Customfield {
 		$this->value = $value;
 	}
 
-	abstract public function receivePostValue($value);
+	abstract public function receiveHtmlValue($value);
 	abstract public function getPreviewFieldHtml();
 	abstract public function getEditableFieldHtml();
 }

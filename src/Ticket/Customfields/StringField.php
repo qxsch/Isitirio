@@ -6,7 +6,7 @@ use Isitirio\Ticket\Customfields\Helpers\Html,
 
 class StringField extends AbstractCustomField {
 
-	public function receivePostValue($value) {
+	public function receiveHtmlValue($value) {
 		$configuration = $this->getConfiguration();
 		$value = (string)$value;
 		if(!@$configuration['Multiline']) {
