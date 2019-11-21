@@ -2,7 +2,7 @@
 
 namespace Isitirio\Core\Group;
 
-use Isitirio\Core\User\UserInterface
+use Isitirio\Core\User\UserInterface,
     Isitirio\Core\UserGroupProviderRegistry;
 
 class GroupMemberList implements \Countable, \Iterator {
@@ -15,6 +15,20 @@ class GroupMemberList implements \Countable, \Iterator {
 
 	public function getGroup() : GroupInterface {
 		return $this->group;
+	}
+
+	public function contains(UserInterface $user) : bool {
+		$this->loadUsers();
+		foreach($this->users as $u) {
+			if($u->getUsername() == $user->getUsername()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public function save() {
+		return UserGroupProviderRegistry::get()->saveGroupMembers($this);
 	}
 
 	public function refresh() {

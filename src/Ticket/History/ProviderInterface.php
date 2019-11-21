@@ -2,7 +2,7 @@
 
 namespace Isitirio\Ticket\History;
 
-class ProviderInterface {
+interface ProviderInterface {
 	public function insert(string $ticketId, HistoryEventInterface $event);
 
 	public function select(string $ticketId, int $offset=-1, int $limit=-1) : \Traversable;

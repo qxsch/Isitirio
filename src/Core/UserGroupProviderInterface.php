@@ -3,18 +3,21 @@
 namespace Isitirio\Core;
 
 use Isitirio\Core\Group\GroupInterface,
+    Isitirio\Core\Group\GroupMemberList,
     Isitirio\Core\User\UserInterface;
 
 interface UserGroupProviderInterface {
 	public function selectGroupsByUser(string $username) : \Traversable;
 	public function selectUsersByGroup(string $groupname) : \Traversable;
 
-	public function deleteGroup(string $groupname);
-	public function updateGroup(GroupInterface $group);
-	public function GroupExists(string $groupname);
+	public function deleteGroup(GroupInterface $group);
+	public function saveGroup(GroupInterface $group);
+	public function groupExists(string $groupname);
 
-	public function deleteUser(string $username);
-	public function updateUser(UserInterface $user);
-	public function UserExists(string $username);
+	public function saveGroupMembers(GroupMemberList $members);
+
+	public function deleteUser(UserInterface $user);
+	public function saveUser(UserInterface $user);
+	public function userExists(string $username);
 }
 

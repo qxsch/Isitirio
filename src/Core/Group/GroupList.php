@@ -17,10 +17,26 @@ class GroupList implements \Countable, \Iterator {
 		return $this->user;
 	}
 
+	public function contains(GroupInerface $group) : bool {
+		return isset($this->groups[$group->getGroupname()]);
+	}
+
+	public function containsAny(iterable $groups) : bool {
+		foreach($groups as $group) {
+			if($group instanceof GroupInerface && isset($this->groups[$group->getGroupname()])) {
+				return true;
+			}
+			elseif(is_string($group) && isset($this->groups[$group])) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public function refresh() {
-		$this->groups = new \SplDoublyLinkedList();
+		$this->groups = new \ArrayObject();
 		foreach(UserGroupProviderRegistry::get()->selectGroupsByUser($this->user->getUsername()) as $g) {
-			$this->groups->push($g);
+			$this->groups[$g->getGroupname()] = $g;
 		}
 		return $this;
 	}

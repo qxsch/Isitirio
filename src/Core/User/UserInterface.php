@@ -11,7 +11,7 @@ interface UserInterface {
 
 	public function getImageUrl() : string;
 
-	public function getGivennmae() : string;
+	public function getGivenname() : string;
 
 	public function getLastname() : string;
 
