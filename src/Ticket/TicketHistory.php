@@ -5,11 +5,9 @@ use Isitirio\Ticket\History\HistoryEventInterface;
 
 class TicketHistory implements \Countable, \IteratorAggregate {
 	private $ticket;
-	private $provider;
 
 	public function __construct(Ticket $ticket) {
 		$this->ticket = $ticket;
-		$this->provider = History\ProviderRegistry::get();
 	}
 
 	public function getTicket() : Ticket {
@@ -17,19 +15,19 @@ class TicketHistory implements \Countable, \IteratorAggregate {
 	}
 
 	public function append(HistoryEntryInterface $event) {
-		return $this->provider->insert($ticket->getId(), $event);
+		return History\ProviderRegistry::get()->insert($this->ticket->getId(), $event);
 	}
 
 	public function get(int $offset=0, int $limit=50) {
-		return $this->provider->select($ticket->getId(), $offset, $limit);
+		return History\ProviderRegistry::get()->select($this->ticket->getId(), $offset, $limit);
 	}
 
 	public function getIterator() {
-		return $this->provider->select($ticket->getId());
+		return History\ProviderRegistry::get()->select($this->ticket->getId());
 	}
 
 	public function count() : int {
-		return $this->provider->selectCount($ticket->getId());
+		return History\ProviderRegistry::get()->selectCount($this->ticket->getId());
 	}
 }
 
