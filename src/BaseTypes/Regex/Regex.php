@@ -2,32 +2,33 @@
 namespace Isitirio\BaseTypes\Regex;
 
 class Regex {
-	private $pattern;
+	private string $pattern;
 
 	public function __construct($pattern) {
 		$this->pattern = (string)$pattern;
 	}
 
-	public function match($str, int $offset=0) : ?Regex\Match {
+	public function match($str, int $offset=0) : ?RegexMatch {
 		if(\preg_match($this->pattern, (string)$str, $m, PREG_OFFSET_CAPTURE, $offset)) {
-			return new Match($m);
+			return new RegexMatch($m);
 		}
 		return null;
 	}
 
-	public function matchAll($str, int $offset=0) : ?Regex\Matches {
+	public function matchAll($str, int $offset=0) : ?RegexMatches {
 		if(\preg_match_all($this->pattern, (string)$str, $m, PREG_OFFSET_CAPTURE | PREG_SET_ORDER, $offset)) {
-			return new Matches($m);
+			return new RegexMatches($m);
 		}
 		return null;
 	}
 
-	public function replace($str, $replacement, int $limit=-1) : string {
+	public function replace($str, $replacement, int $limit=-1, bool $appendOriginalValue = true) : RegexReplacement {
+		$c = 0;
 		if($replacement instanceof \Closure) {
-			$val = \preg_replace_callback($this->pattern, $replacement, $this->str, $limit, $this->c);
+			$val = \preg_replace_callback($this->pattern, $replacement, (string)$str, $limit, $c);
 		}
 		else {
-			$val = \preg_replace($this->pattern, (string)$replacement, $this->str, $limit, $this->c);
+			$val = \preg_replace($this->pattern, (string)$replacement, (string)$str, $limit, $c);
 		}
 		if($val === null || $val === false) {
 			switch(preg_last_error()) {
@@ -46,7 +47,16 @@ class Regex {
 			}
 			new \RuntimeException('Failed with error: unknown (' . preg_last_error() . ')');
 		}
-		return $val;
+		if($appendOriginalValue) {
+			return new RegexReplacement($val, $c, (string)$str);
+		}
+		else {
+			return new RegexReplacement($val, $c, null);
+		}
+	}
+
+	public function replaceStr($str, $replacement, int $limit=-1) : string {
+		return $this->replace($str, $replacement, $limit, false)->get();
 	}
 }
 

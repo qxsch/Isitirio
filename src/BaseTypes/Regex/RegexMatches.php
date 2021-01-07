@@ -1,13 +1,13 @@
 <?php
 namespace Isitirio\BaseTypes\Regex;
 
-class Matches implements \IteratorAggregate, \ArrayAccess, \Countable {
+class RegexMatches implements \IteratorAggregate, \ArrayAccess, \Countable {
 	private $matches;
 
 	public function __construct(array $regexArr, string $name = '') {
 		$this->matches = new \ArrayObject();
 		foreach($regexArr as $k => $v) {
-			$this->matches[$k] = new Match($v);
+			$this->matches[$k] = new RegexMatch($v);
 		}
 	}
 

@@ -148,16 +148,16 @@ class ImmutableUTF8String implements StringInterface {
 		return $arr;
 	}
 
-	public function matchRegex($pattern, int $offset=0) : ?Regex\Match {
+	public function matchRegex($pattern, int $offset=0) : ?Regex\RegexMatch {
 		if(\preg_match(((string)$pattern) . 'u', $this->str, $m, PREG_OFFSET_CAPTURE, $offset)) {
-			return new Regex\Match($m);
+			return new Regex\RegexMatch($m);
 		}
 		return null;
 	}
 
-	public function matchAllRegex($pattern, int $offset=0) : ?Regex\Matches {
+	public function matchAllRegex($pattern, int $offset=0) : ?Regex\RegexMatches {
 		if(\preg_match_all(((string)$pattern) . 'u', $this->str, $m, PREG_OFFSET_CAPTURE | PREG_SET_ORDER, $offset)) {
-			return new Regex\Matches($m);
+			return new Regex\RegexMatches($m);
 		}
 		return null;
 	}

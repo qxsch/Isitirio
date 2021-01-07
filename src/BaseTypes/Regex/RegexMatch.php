@@ -1,7 +1,7 @@
 <?php
 namespace Isitirio\BaseTypes\Regex;
 
-class Match  {
+class RegexMatch  {
 	private $start;
 	private $stop;
 	private $groups;
@@ -13,10 +13,10 @@ class Match  {
 		$this->start = $regexArr[0][1];
 		$this->stop =  $regexArr[0][1] + \strlen($regexArr[0][0]);
 
-		$this->groups = new Groups($regexArr);
+		$this->groups = new RegexGroups($regexArr);
 	}
 
-	public function groups() : Groups {
+	public function groups() : RegexGroups {
 		return $this->groups;
 	}
 

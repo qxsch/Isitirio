@@ -1,7 +1,7 @@
 <?php
 namespace Isitirio\BaseTypes\Regex;
 
-class Group  {
+class RegexGroup  {
 	private $start;
 	private $stop;
 	private $val;

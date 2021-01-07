@@ -1,13 +1,13 @@
 <?php
 namespace Isitirio\BaseTypes\Regex;
 
-class Groups implements \IteratorAggregate, \ArrayAccess, \Countable {
+class RegexGroups implements \IteratorAggregate, \ArrayAccess, \Countable {
 	private $groups;
 
 	public function __construct(array $regexArr, string $name = '') {
 		$this->groups = new \ArrayObject();
 		foreach($regexArr as $k => $v) {
-			$this->groups[$k] = new Group($v, $k);
+			$this->groups[$k] = new RegexGroup($v, $k);
 		}
 	}
 
